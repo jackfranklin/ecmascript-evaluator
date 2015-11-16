@@ -1,0 +1,21 @@
+{
+  "name": "ecmascript-evaluator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "babel-tape-runner test/*.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.1.21",
+    "babel-preset-es2015": "^6.1.18"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.1.18",
+    "babel-tape-runner": "^1.3.0",
+    "tape": "^4.2.2"
+  }
+}
