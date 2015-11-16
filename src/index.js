@@ -20,7 +20,7 @@ const ASSERT_STRICT_EQUAL = (function assertStrictEqual(x, y) {
   createAssertResult(x === y, 'strictEqual', [x, y]);
 }).toString();
 
-const ASSERT_RESOLVES_TOO = (function assertResolvesTo(promise, x) {
+const ASSERT_RESOLVES_TO = (function assertResolvesTo(promise, x) {
   createAssertResult(promise.then((y) => x == y), 'resolvesTo', ['promise', x]);
 });
 
@@ -40,7 +40,7 @@ const ASSERTION_FUNCTIONS = [
   ASSERT_EQUAL,
   ASSERT_STRICT_EQUAL,
   ASSERT_THROWS,
-  ASSERT_RESOLVES_TOO
+  ASSERT_RESOLVES_TO
 ].join('\n');
 
 const Evaluator = {
