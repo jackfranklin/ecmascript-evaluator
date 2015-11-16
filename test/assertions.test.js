@@ -13,13 +13,15 @@ test('assertEqual', (t) => {
     assertEqual(2, 1);
   `);
 
-  t.deepEqual(results, [
-    { assertion: 'equal', args: [1, 1], passed: true },
-    { assertion: 'equal', args: [0, false], passed: true },
-    { assertion: 'equal', args: ['hello', 'hello'], passed: true },
-    { assertion: 'equal', args: [true, 1], passed: true },
-    { assertion: 'equal', args: [2, 1], passed: false }
-  ]);
+  results.then((r) => {
+    t.deepEqual(r, [
+      { assertion: 'equal', args: [1, 1], passed: true },
+      { assertion: 'equal', args: [0, false], passed: true },
+      { assertion: 'equal', args: ['hello', 'hello'], passed: true },
+      { assertion: 'equal', args: [true, 1], passed: true },
+      { assertion: 'equal', args: [2, 1], passed: false }
+    ]);
+  });
 });
 
 test('assertStrictEqual', (t) => {
@@ -33,12 +35,14 @@ test('assertStrictEqual', (t) => {
     assertStrictEqual(true, 1);
   `);
 
-  t.deepEqual(results, [
-    { assertion: 'strictEqual', args: [1, 1], passed: true },
-    { assertion: 'strictEqual', args: [0, false], passed: false },
-    { assertion: 'strictEqual', args: ['hello', 'hello'], passed: true },
-    { assertion: 'strictEqual', args: [true, 1], passed: false },
-  ]);
+  results.then((r) => {
+    t.deepEqual(r, [
+      { assertion: 'strictEqual', args: [1, 1], passed: true },
+      { assertion: 'strictEqual', args: [0, false], passed: false },
+      { assertion: 'strictEqual', args: ['hello', 'hello'], passed: true },
+      { assertion: 'strictEqual', args: [true, 1], passed: false },
+    ]);
+  });
 });
 
 test('assertThrows', (t) => {
@@ -50,8 +54,26 @@ test('assertThrows', (t) => {
     assertThrows(function() { return y });
   `);
 
-  t.deepEqual(results, [
-    { assertion: 'throws', args: ['function'], passed: false },
-    { assertion: 'throws', args: ['function'], passed: true },
-  ]);
+  results.then((r) => {
+    t.deepEqual(r, [
+      { assertion: 'throws', args: ['function'], passed: false },
+      { assertion: 'throws', args: ['function'], passed: true },
+    ]);
+  });
+});
+
+test('assertResolvesTo', (t) => {
+  t.plan(1);
+
+  const results = Evaluator.run(`
+    const x = 1;
+    assertResolvesTo(Promise.resolve(x), 1);
+    assertResolvesTo(Promise.resolve(x), 2);
+  `);
+  results.then((r) => {
+    t.deepEqual(r, [
+      { assertion: 'resolvesTo', args: ['promise', 1], passed: true },
+      { assertion: 'resolvesTo', args: ['promise', 2], passed: false },
+    ]);
+  });
 });
