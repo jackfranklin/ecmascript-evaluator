@@ -1,11 +1,12 @@
 {
   "name": "ecmascript-evaluator",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel -d lib src",
-    "test": "babel-tape-runner test/*.test.js"
+    "test": "babel-tape-runner test/*.test.js",
+    "prepublish": "npm run build"
   },
   "keywords": [],
   "author": "",
