@@ -45,23 +45,6 @@ test('assertStrictEqual', (t) => {
   });
 });
 
-test('assertThrows', (t) => {
-  t.plan(1);
-
-  const results = Evaluator.run(`
-    const x = 1;
-    assertThrows(function() { return x });
-    assertThrows(function() { return y });
-  `);
-
-  results.then((r) => {
-    t.deepEqual(r, [
-      { assertion: 'throws', args: ['function'], passed: false },
-      { assertion: 'throws', args: ['function'], passed: true },
-    ]);
-  });
-});
-
 test('assertResolvesTo', (t) => {
   t.plan(1);
 
