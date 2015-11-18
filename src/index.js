@@ -1,6 +1,7 @@
 import { transform } from 'babel-core';
 
-const CREATE_ASSERT_RESULT = (function createAssertResult(passed, type, args) {
+
+const createAssertResult = function(passed, type, args) {
   _results.push(
     Promise.resolve(passed).then((passed) => {
       return Promise.all(args.map(a => Promise.resolve(a))).then((resolvedArgs) => {
@@ -12,21 +13,29 @@ const CREATE_ASSERT_RESULT = (function createAssertResult(passed, type, args) {
       });
     })
   );
-}).toString();
+}
 
-const ASSERT_EQUAL = (function assertEqual(x, y) {
+const CREATE_ASSERT_RESULT = `const createAssertResult = ${createAssertResult.toString()}`;
+
+const assertEqual = function(x, y) {
   createAssertResult(x == y, 'equal', [x, y]);
-}).toString();
+}
 
-const ASSERT_STRICT_EQUAL = (function assertStrictEqual(x, y) {
+const ASSERT_EQUAL = `const assertEqual = ${assertEqual.toString()}`;
+
+const assertStrictEqual = function(x, y) {
   createAssertResult(x === y, 'strictEqual', [x, y]);
-}).toString();
+}
 
-const ASSERT_RESOLVES_TO = (function assertResolvesTo(promise, x) {
+const ASSERT_STRICT_EQUAL = `const assertStrictEqual = ${assertStrictEqual.toString()}`;
+
+const assertResolvesTo = function(promise, x) {
   createAssertResult(promise.then((y) => x == y), 'resolvesTo', [promise, x]);
-});
+}
 
-const ASSERT_THROWS = (function assertThrows(fn) {
+const ASSERT_RESOLVES_TO = `const assertResolvesTo = ${assertResolvesTo.toString()}`;
+
+const assertThrows = function(fn) {
   try {
     fn();
     // TODO: returning 'function' as the arg isn't useful
@@ -35,7 +44,9 @@ const ASSERT_THROWS = (function assertThrows(fn) {
     createAssertResult(true, 'throws', ['function']);
 
   }
-}).toString();
+}
+
+const ASSERT_THROWS = `const assertThrows = ${assertThrows.toString()}`;
 
 const ASSERTION_FUNCTIONS = [
   CREATE_ASSERT_RESULT,
