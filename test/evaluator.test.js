@@ -29,12 +29,12 @@ test('Assertions can fail', (t) => {
   });
 });
 
-test('It returns an error when given a syntax error', (t) => {
+test('It throws on a syntax error', (t) => {
   t.plan(1);
 
   const results = Evaluator.run(`assertEqual(2, 1;`);
 
-  results.then((r) => {
+  results.catch((r) => {
     t.deepEqual(r, [
       {
         error: true,
@@ -45,11 +45,11 @@ test('It returns an error when given a syntax error', (t) => {
   });
 });
 
-test('It returns an error when there is a runtime error', (t) => {
+test('It throws on a runtime error', (t) => {
   t.plan(1);
 
   const results = Evaluator.run(`assertEqual(x, 1);`);
-  results.then((r) => {
+  results.catch((r) => {
     t.deepEqual(r, [
       {
         error: true,

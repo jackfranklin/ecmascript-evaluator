@@ -51,7 +51,7 @@ const Evaluator = {
     if (!transpiled.error) {
       return this.evalCode(transpiled);
     } else {
-      return Promise.resolve([transpiled]);
+      return Promise.reject([transpiled]);
     }
   },
   evalCode(transpiledCode) {
@@ -66,7 +66,7 @@ const Evaluator = {
       const result = new Function(code)();
       return result;
     } catch (e) {
-      return Promise.resolve([{
+      return Promise.reject([{
         error: true,
         errorType: e.name,
         message: e.message
