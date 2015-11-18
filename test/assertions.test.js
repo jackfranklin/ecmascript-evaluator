@@ -72,8 +72,8 @@ test('assertResolvesTo', (t) => {
   `);
   results.then((r) => {
     t.deepEqual(r, [
-      { assertion: 'resolvesTo', args: ['promise', 1], passed: true },
-      { assertion: 'resolvesTo', args: ['promise', 2], passed: false },
+      { assertion: 'resolvesTo', args: [1, 1], passed: true },
+      { assertion: 'resolvesTo', args: [1, 2], passed: false },
     ]);
   });
 });

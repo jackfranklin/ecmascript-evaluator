@@ -3,11 +3,13 @@ import { transform } from 'babel-core';
 const CREATE_ASSERT_RESULT = (function createAssertResult(passed, type, args) {
   _results.push(
     Promise.resolve(passed).then((passed) => {
-      return {
-        passed: passed,
-        assertion: type,
-        args: args
-      };
+      return Promise.all(args.map(a => Promise.resolve(a))).then((resolvedArgs) => {
+        return {
+          passed: passed,
+          assertion: type,
+          args: resolvedArgs
+        };
+      });
     })
   );
 }).toString();
@@ -21,7 +23,7 @@ const ASSERT_STRICT_EQUAL = (function assertStrictEqual(x, y) {
 }).toString();
 
 const ASSERT_RESOLVES_TO = (function assertResolvesTo(promise, x) {
-  createAssertResult(promise.then((y) => x == y), 'resolvesTo', ['promise', x]);
+  createAssertResult(promise.then((y) => x == y), 'resolvesTo', [promise, x]);
 });
 
 const ASSERT_THROWS = (function assertThrows(fn) {
